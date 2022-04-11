@@ -1,6 +1,6 @@
 To run use the following:
 
-SSL Args:
+**SSL Args:**
     -Djavax.net.ssl.trustStore=/path/to/client.truststore 
     -Djavax.net.ssl.trustStorePassword=password123 
     -Djavax.net.ssl.keyStore=/path/to/client.keystore
