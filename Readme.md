@@ -1,10 +1,10 @@
 To run use the following:
 
-**SSL Args:**
-    -Djavax.net.ssl.trustStore=/path/to/client.truststore 
-    -Djavax.net.ssl.trustStorePassword=password123 
-    -Djavax.net.ssl.keyStore=/path/to/client.keystore
-    -Djavax.net.ssl.keyStorePassword=password123
+**SSL Args:**<br>
+    -Djavax.net.ssl.trustStore=/path/to/client.truststore<br> 
+    <br>-Djavax.net.ssl.trustStorePassword=password123<br>
+    <br>-Djavax.net.ssl.keyStore=/path/to/client.keystore<br>
+    <br>-Djavax.net.ssl.keyStorePassword=password123<br>
 
 **Run Command:**
 java -jar ./jar/CassandraConnectionTest.jar <contact point> <user> <password> <true|false - ssl>
