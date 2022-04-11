@@ -53,7 +53,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>app.TestConnection1</mainClass>
+              <mainClass>com.datastax.test.TestConnection</mainClass>
             </manifest>
           </archive>
         </configuration>

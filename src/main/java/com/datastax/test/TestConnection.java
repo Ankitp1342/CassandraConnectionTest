@@ -34,13 +34,20 @@ public class TestConnection {
 
         try {
 
-            cluster = Cluster.builder()
-                    .addContactPoint(args[0])
-                    .withCredentials(args[1], args[2])
-                    .withSSL()
-                    .build();
-            Session session = cluster.connect();
+            if(args.length==4 && Boolean.parseBoolean(args[3])) {
+                cluster = Cluster.builder()
+                        .addContactPoint(args[0])
+                        .withCredentials(args[1], args[2])
+                        .withSSL()
+                        .build();
+            }else{
+                cluster = Cluster.builder()
+                        .addContactPoint(args[0])
+                        .withCredentials(args[1], args[2])
+                        .build();
 
+            }
+            Session session = cluster.connect();
 
             while(true) {
                 try {
