@@ -1,6 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
+
+  <!-- Inherit defaults from Spring Boot -->
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.6.7</version>
+  </parent>
 
   <groupId>com.datastax</groupId>
   <artifactId>CassandraConnectionTest</artifactId>
@@ -17,6 +25,14 @@
     Note that spark-cassandra-connector should be provided with '&#45;&#45;packages' flag to spark-submit command.
   -->
   <dependencies>
+
+
+    <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+      <version>2.6.7</version>
+    </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -36,58 +52,30 @@
       <version>3.11.0</version>
     </dependency>
 
+
+    <!-- https://mvnrepository.com/artifact/com.codahale.metrics/metrics-core -->
+    <dependency>
+      <groupId>com.codahale.metrics</groupId>
+      <artifactId>metrics-core</artifactId>
+      <version>3.0.2</version>
+    </dependency>
+
+
+
     <!-- Force Guava 18 on Test CP, Required for Cassandra -->
   </dependencies>
 
   <build>
     <resources>
       <resource>
-        <directory>src/resources</directory>
+        <directory>src/main/resources</directory>
       </resource>
     </resources>
     <plugins>
-
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>com.datastax.test.TestConnection</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>2.4.3</version>
-        <executions>
-          <execution>
-
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-
-            <configuration>
-              <filters>
-                <filter>
-                  <!-- filter out signature files from signed dependencies, else repackaging fails with security ex -->
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                  </excludes>
-                </filter>
-              </filters>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
     </plugins>
   </build>
 </project>

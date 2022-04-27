@@ -26,6 +26,18 @@ public class TestConnection {
      */
     public static void main(String[] args) {
 
+        ConnectionConfigProperties properties = new ConnectionConfigProperties();
+        properties.setContactPoint(args[0]);
+        properties.setUsername(args[1]);
+        properties.setPassword(args[2]);
+        properties.setUseSSL(Boolean.parseBoolean(args[3]));
+
+        runTest(properties);
+    }
+
+
+    public static void runTest(ConnectionConfigProperties properties){
+
         // Create the Cluster object:
         Cluster cluster = null;
 
@@ -34,16 +46,19 @@ public class TestConnection {
 
         try {
 
-            if(args.length==4 && Boolean.parseBoolean(args[3])) {
+            if(properties.getUseSSL()) {
+                System.setProperty("javax.net.ssl.trustStore",properties.getTrustStore());
+                System.setProperty("javax.net.ssl.trustStorePassword",properties.getTrustStorePassword());
+
                 cluster = Cluster.builder()
-                        .addContactPoint(args[0])
-                        .withCredentials(args[1], args[2])
+                        .addContactPoint(properties.getContactPoint())
+                        .withCredentials(properties.getUsername(), properties.getPassword())
                         .withSSL()
                         .build();
             }else{
                 cluster = Cluster.builder()
-                        .addContactPoint(args[0])
-                        .withCredentials(args[1], args[2])
+                        .addContactPoint(properties.getContactPoint())
+                        .withCredentials(properties.getUsername(), properties.getPassword())
                         .build();
 
             }
@@ -52,14 +67,17 @@ public class TestConnection {
             while(true) {
                 try {
                     // Select the release_version from the system.local table:
-                    ResultSet rs = session.execute("select release_version from system.local");
+                    long time = System.currentTimeMillis();
+                    ResultSet rs = session.execute("select now() from system.local");
                     Row row = rs.one();
                     //Print the results of the CQL query to the console:
                     if (row != null) {
-                        logger.info("Release Version" + row.getString("release_version"));
+                        logger.info("Now Value: " + row.getObject(0));
                     } else {
                         logger.error("An error occurred.");
                     }
+
+                    logger.info("Total Time (ms): " + (System.currentTimeMillis()-time));
                 }catch(Exception e){
                     logger.error("Error making query", e);
                 }
